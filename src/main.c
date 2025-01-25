@@ -1,6 +1,8 @@
-#include <limine.h>
-#include <stdbool.h>
-#include <stddef.h>
+#include "defs.h"
+#include "flanterm/backends/fb.h"
+#include "flanterm/flanterm.h"
+#include "limine.h"
+// #include <stddef.h>
 #include <stdint.h>
 
 // Set the base revision to 3, this is recommended as this is the latest
@@ -113,14 +115,20 @@ void kmain(void) {
   }
 
   // Fetch the first framebuffer.
-  struct limine_framebuffer *framebuffer =
+  struct limine_framebuffer *fbp =
       framebuffer_request.response->framebuffers[0];
 
   // Note: we assume the framebuffer model is RGB with 32-bit pixels.
-  for (size_t i = 0; i < 100; i++) {
-    volatile uint32_t *fb_ptr = framebuffer->address;
-    fb_ptr[i * (framebuffer->pitch / 4) + i] = 0xffffff;
-  }
+  //  for (size_t i = 0; i < 100; i++) {
+  //    volatile uint32_t *fb_ptr = fbp->address;
+  //    fb_ptr[i * (fbp->pitch / 4) + i] = 0xffffff;
+  //  }
+
+  // write text to the framebuffer using flanterm lib
+  printkinit(fbp);
+
+  const char *msg = "helloworldabcdefg%d %d\n";
+  printk(msg, 123, 456);
 
   // We're done, just hang...
   hcf();

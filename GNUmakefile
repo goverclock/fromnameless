@@ -109,4 +109,4 @@ obj/%.asm.o: src/%.asm GNUmakefile
 # Remove object files and the final executable.
 .PHONY: clean
 clean:
-	rm -rf bin obj
+	rm -rf bin obj iso_root fromnameless.iso
