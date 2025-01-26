@@ -126,10 +126,9 @@ void kmain(void) {
 
   // write text to the framebuffer using flanterm lib
   printkinit(fbp);
+  printk("helloworldabcdefg%d %d %d %d %y\n", 123, 456, -789, 0);
 
-  const char *msg = "helloworldabcdefg%d %d\n";
-  printk(msg, 123, 456);
-
+  printk("%x\n", kmain);
   // We're done, just hang...
   hcf();
 }

@@ -14,7 +14,29 @@ void printkinit(struct limine_framebuffer *fbp) {
       NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 1, 0, 0, 0);
 }
 
-void putchar(char c) { flanterm_write(ft_ctx, &c, 1); }
+static void putchar(char c) { flanterm_write(ft_ctx, &c, 1); }
+
+static void printint(int64_t xx, int base, int sign) {
+  static char digits[] = "0123456789abcdef";
+
+  uint64_t x;
+  if (sign && xx < 0)
+    x = -xx;
+  else
+    x = xx;
+
+  int i = 0;
+  char buf[16];
+  do {
+    buf[i++] = digits[x % base];
+  } while ((x /= base) != 0);
+
+  if (sign && xx < 0)
+    buf[i++] = '-';
+
+  while (--i >= 0)
+    putchar(buf[i]);
+}
 
 void panic(char *s) {
   printk("panic: ");
@@ -27,6 +49,7 @@ void panic(char *s) {
 
 void printk(const char *fmt, ...) {
   va_list ap;
+  va_start(ap, fmt);
 
   for (int i = 0; fmt[i]; i++) {
     char c = fmt[i];
@@ -40,8 +63,10 @@ void printk(const char *fmt, ...) {
       break;
     switch (c) {
     case 'd':
-      //      printint(va_arg(ap, int), 10, 1);
-      putchar('D');
+      printint(va_arg(ap, int), 10, 1);
+      break;
+    case 'x':
+      printint(va_arg(ap, int), 16, 0);
       break;
     default:
       putchar('%');
