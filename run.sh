@@ -29,5 +29,7 @@ xorriso -as mkisofs -R -r -J -b boot/limine/limine-bios-cd.bin \
 # Install Limine stage 1 and 2 for legacy BIOS boot.
 ./limine/limine bios-install fromnameless.iso
 
-echo iso created, starting qemu
-qemu-system-x86_64 -cdrom ./fromnameless.iso
+echo
+echo ==========iso created, starting qemu==========
+echo
+qemu-system-x86_64 -monitor stdio -cdrom ./fromnameless.iso

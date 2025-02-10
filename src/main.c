@@ -1,6 +1,7 @@
 #include "defs.h"
 #include "flanterm/backends/fb.h"
 #include "flanterm/flanterm.h"
+#include "gdt.h"
 #include "limine.h"
 // #include <stddef.h>
 #include <stdint.h>
@@ -93,6 +94,7 @@ int memcmp(const void *s1, const void *s2, size_t n) {
 }
 
 // Halt and catch fire function.
+// TODO: replace with panic(const char* msg)
 static void hcf(void) {
   for (;;) {
     asm("hlt");
@@ -128,7 +130,15 @@ void kmain(void) {
   printkinit(fbp);
   printk("helloworldabcdefg%d %d %d %d %y\n", 123, 456, -789, 0);
 
-  printk("%x\n", kmain);
+  printk("fbp->address=%x\n", fbp->address);
+  printk("fbp->width=%x\n", fbp->width);
+  printk("fbp->height=%x\n", fbp->height);
+
+  printk("kmain=%x\n", kmain);
+
+  // setup GDT for paging
+  init_gdt();
+
   // We're done, just hang...
   hcf();
 }
