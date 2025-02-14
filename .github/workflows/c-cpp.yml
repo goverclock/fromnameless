@@ -16,7 +16,6 @@ jobs:
     - name: install dependency
       run: |
           sudo apt update
-          sudo apt install make gcc nasm pkg-config grub-pc-bin mtools xorriso qemu qemu-kvm wget
-
+          sudo apt install make gcc nasm pkg-config grub-pc-bin mtools xorriso
     - name: build
       run: make
