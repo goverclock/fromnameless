@@ -13,5 +13,10 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
+    - name: install dependency
+      run: |
+          sudo apt update
+          sudo apt install make gcc nasm pkg-config grub-pc-bin mtools xorriso qemu qemu-kvm wget
+
     - name: build
       run: make
